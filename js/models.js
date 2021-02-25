@@ -71,12 +71,26 @@ class StoryList {
    * Returns the new Story instance
    */
 
-  async addStory(currentUser, newStory) {
-    let newStory = new Story();
 
-    return;
+  // 2nd param: { title - $forminput, author - $forminput, url }
+  async addStory(currentUser, { title, author, url }) {
+
+    let newStory = await axios.post("https://hack-or-snooze-v3.herokuapp.com/stories", {
+      body: {
+        "token": currentUser.token,
+        "story": {
+          "author": author,
+          "title": title,
+          "url": url
+        }
+      }
+    });
+
+    return newStory;
   }
 }
+
+
 
 /******************************************************************************
  * User: a user in the system (only used to represent the current user)
