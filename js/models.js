@@ -84,7 +84,7 @@ class StoryList {
         },
       }
     );
-    console.log(newStory);
+    
     let storyId = newStory.data.story.storyId;
     let createdAt = newStory.data.story.createdAt;
     let username = newStory.data.story.username;
