@@ -36,10 +36,8 @@ function updateNavOnLogin() {
 }
 
 function clickSubmitOnNav() {
-  console.log("clicked submit link")
+  console.log("clicked submit link");
+  $("#add-new-stories").attr("class", "");
 }
 
-$("#submit-link").on("click", clickSubmitOnNav)
-
-
-
+$("#submit-link").on("click", clickSubmitOnNav);

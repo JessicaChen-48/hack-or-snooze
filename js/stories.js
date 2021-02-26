@@ -50,3 +50,23 @@ function putStoriesOnPage() {
 
   $allStoriesList.show();
 }
+
+// when users click the story submit button for stories
+async function submitStoryForm() {
+  console.log("testing submit");
+  let $authorInput = $("#author-input").val();
+  let $titleInput = $("#title-input").val();
+  let $urlInput = $("url-input").val();
+
+  await storyList.addStory(currentUser, {
+    $authorInput,
+    $titleInput,
+    $urlInput,
+  });
+
+  //needs to be revisited tomorrow morning
+
+  putStoriesOnPage();
+}
+
+$(".submit-new-stories").on("click", "#submit-story-button", submitStoryForm);
