@@ -18,6 +18,7 @@ class Story {
     this.url = url;
     this.username = username;
     this.createdAt = createdAt;
+    this.favorites = false;
   }
 
   /** Parses hostname out of URL and returns it. */
@@ -208,4 +209,14 @@ class User {
       return null;
     }
   }
+
+  addFavorite() {
+    for (let story of storyList) {
+      if (currentUser.story.favorites !== undefined) {
+      story.favorites = true;
+    }
+  }
+}
+
+
 }

@@ -52,17 +52,21 @@ function putStoriesOnPage() {
 }
 
 // when users click the story submit button for stories
-async function submitStoryForm() {
+async function submitStoryForm(e) {
+  e.preventDefault();
   console.log("testing submit");
-  let $authorInput = $("#author-input").val();
-  let $titleInput = $("#title-input").val();
-  let $urlInput = $("url-input").val();
 
-  await storyList.addStory(currentUser, {
-    $authorInput,
-    $titleInput,
-    $urlInput,
+  let authorInput = $("#author-input").val();
+  let titleInput = $("#title-input").val();
+  let urlInput = $("#url-input").val();
+
+  let newStoryToAdd = await storyList.addStory(currentUser, {
+    title: titleInput,
+    author: authorInput,
+    url: urlInput,
   });
+
+  storyList.unshift(newStoryToAdd);
 
   //needs to be revisited tomorrow morning
 
@@ -70,3 +74,5 @@ async function submitStoryForm() {
 }
 
 $(".submit-new-stories").on("click", "#submit-story-button", submitStoryForm);
+
+
