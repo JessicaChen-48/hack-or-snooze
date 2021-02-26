@@ -11,14 +11,22 @@ class Story {
    *   - {title, author, url, username, storyId, createdAt}
    */
 
-  constructor({ storyId, title, author, url, username, createdAt }) {
+  constructor({
+    storyId,
+    title,
+    author,
+    url,
+    username,
+    createdAt,
+    favorite = false,
+  }) {
     this.storyId = storyId;
     this.title = title;
     this.author = author;
     this.url = url;
     this.username = username;
     this.createdAt = createdAt;
-    this.favorites = false;
+    this.favorite = favorite;
   }
 
   /** Parses hostname out of URL and returns it. */
@@ -85,7 +93,7 @@ class StoryList {
         },
       }
     );
-    
+
     let storyId = newStory.data.story.storyId;
     let createdAt = newStory.data.story.createdAt;
     let username = newStory.data.story.username;
@@ -168,6 +176,10 @@ class User {
 
     let { user } = response.data;
 
+    for (let favStory of user.favorites) {
+      favStory.favorite = true;
+    }
+
     return new User(
       {
         username: user.username,
@@ -194,6 +206,10 @@ class User {
 
       let { user } = response.data;
 
+      for (let favStory of user.favorites) {
+        favStory.favorite = true;
+      }
+
       return new User(
         {
           username: user.username,
@@ -210,13 +226,34 @@ class User {
     }
   }
 
-  addFavorite() {
-    for (let story of storyList) {
-      if (currentUser.story.favorites !== undefined) {
-      story.favorites = true;
-    }
+  async addFavorite(story) {
+    story.favorite = true;
+    let username = this.username;
+    let storyId = story.storyId;
+    let response = await axios.post(
+      `https://hack-or-snooze-v3.herokuapp.com/users/${username}/favorites/${storyId}`,
+      {
+        token: this.loginToken,
+      }
+    );
+    console.log(response);
+    this.favorites = response.data.user.favorites.map(
+      (s) => new Story({ ...s, favorite: true })
+    );
   }
-}
 
-
+  async removeFavorite(story) {
+    story.favorite = false;
+    let username = this.username;
+    let storyId = story.storyId;
+    let response = await axios.delete(
+      `https://hack-or-snooze-v3.herokuapp.com/users/${username}/favorites/${storyId}`,
+      {
+        data: { token: this.loginToken },
+      }
+    );
+    this.favorites = response.data.user.favorites.map(
+      (s) => new Story({ ...s, favorite: true })
+    );
+  }
 }
