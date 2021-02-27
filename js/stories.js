@@ -25,6 +25,7 @@ function generateStoryMarkup(story) {
   const hostName = story.getHostName();
   return $(`
       <li id="${story.storyId}">
+      <i class="far fa-star"></i>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -68,11 +69,42 @@ async function submitStoryForm(e) {
 
   storyList.unshift(newStoryToAdd);
 
-  //needs to be revisited tomorrow morning
-
   putStoriesOnPage();
 }
 
 $(".submit-new-stories").on("click", "#submit-story-button", submitStoryForm);
+
+// click on favorite icon to favorite
+
+$("body").on("click", "i", async function (e) {
+
+  console.log("a star was born")
+
+  let $star = $(e.target);
+
+  let storyId = $star.parent().attr("id");
+
+  console.log(storyId);
+
+  let currentStory;
+
+  for (let story of storyList.stories) {
+    if (story.storyId === storyId) {
+      currentStory = story;
+    }
+  }
+
+  if ($star.hasClass("far")){
+    await currentUser.addFavorite(currentStory);
+  } else {
+    await currentUser.removeFavorite(currentStory);
+  }
+
+  $star.toggleClass("fas far");
+
+
+});
+
+
 
 

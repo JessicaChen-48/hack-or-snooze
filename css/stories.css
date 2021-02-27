@@ -37,3 +37,8 @@
 .story-user {
   display: block;
 }
+
+.star-color {
+  /* background-color:purple; */
+  color: teal;
+}
